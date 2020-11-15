@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliss.Recruitment.Simple.Api", "Bliss.Recruitment.Simple.Api\Bliss.Recruitment.Simple.Api.csproj", "{A819A789-72E9-4D9C-A87B-5DA5CBD26055}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A819A789-72E9-4D9C-A87B-5DA5CBD26055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A819A789-72E9-4D9C-A87B-5DA5CBD26055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A819A789-72E9-4D9C-A87B-5DA5CBD26055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A819A789-72E9-4D9C-A87B-5DA5CBD26055}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6FC35CD4-B881-4E34-8DEF-9B434FE96133}
+	EndGlobalSection
+EndGlobal
