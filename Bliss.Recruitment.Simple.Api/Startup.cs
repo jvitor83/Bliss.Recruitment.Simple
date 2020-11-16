@@ -1,3 +1,5 @@
+using Bliss.Recruitment.Simple.Api.Documentation;
+using Bliss.Recruitment.Simple.Api.HealthCheck;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +18,7 @@ namespace Bliss.Recruitment.Simple.Api
 {
     public class Startup
     {
+        private const string DatabaseConnectionStringName = "DefaultConnection";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,10 +31,15 @@ namespace Bliss.Recruitment.Simple.Api
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bliss.Recruitment.Simple.Api", Version = "v1" });
-            });
+
+            services.AddSwaggerConfiguration();
+
+            string databaseConnectionString = this.Configuration.GetConnectionString(DatabaseConnectionStringName);
+
+            services.AddHealthCheckConfiguration(databaseConnectionString);
+
+            Core.Startup.ConfigureServices(services, Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,9 +48,10 @@ namespace Bliss.Recruitment.Simple.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bliss.Recruitment.Simple.Api v1"));
             }
+            app.UseSwaggerConfiguration();
+
+            app.UseHealthCheckConfiguration();
 
             app.UseHttpsRedirection();
 
@@ -54,6 +63,7 @@ namespace Bliss.Recruitment.Simple.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

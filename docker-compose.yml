@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  bliss.recruitment.simple.api:
+    image: ${DOCKER_REGISTRY-}blissrecruitmentsimpleapi
+    build:
+      context: .
+      dockerfile: Bliss.Recruitment.Simple.Api/Dockerfile
+
+  database.bliss.recruitment:
+    image: mcr.microsoft.com/mssql/server:2017-latest

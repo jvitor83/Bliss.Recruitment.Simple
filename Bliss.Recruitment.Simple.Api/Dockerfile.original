@@ -8,8 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["Bliss.Recruitment.Simple.Api/Bliss.Recruitment.Simple.Api.csproj", "Bliss.Recruitment.Simple.Api/"]
-COPY ["Bliss.Recruitment.Simple.Core/Bliss.Recruitment.Simple.Core.csproj", "Bliss.Recruitment.Simple.Core/"]
-COPY ["Bliss.Recruitment.Simple.Data/Bliss.Recruitment.Simple.Data.csproj", "Bliss.Recruitment.Simple.Data/"]
 RUN dotnet restore "Bliss.Recruitment.Simple.Api/Bliss.Recruitment.Simple.Api.csproj"
 COPY . .
 WORKDIR "/src/Bliss.Recruitment.Simple.Api"
