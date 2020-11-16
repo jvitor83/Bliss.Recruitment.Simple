@@ -75,5 +75,28 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
 
             return Ok(questions);
         }
+
+
+        [HttpPut("{question_id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(Question), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put(int question_id, [FromBody] RegisterQuestionRequestModel requestModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest("All fields are mandatory.");
+            }
+
+            Question question = this._questionService.ChangeQuestion(
+                question_id, 
+                requestModel.Description,
+                requestModel.ImageUrl,
+                requestModel.ThumbUrl,
+                requestModel.Choices
+                );
+
+            return CreatedAtAction(nameof(GetById), new { question_id = question.QuestionId }, question);
+        }
     }
 }

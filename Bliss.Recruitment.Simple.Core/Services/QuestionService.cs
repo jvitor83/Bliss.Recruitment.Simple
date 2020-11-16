@@ -20,6 +20,27 @@ namespace Bliss.Recruitment.Simple.Core.Services
             this._unitOfWork = unitOfWork;
         }
 
+        public Question ChangeQuestion(int id, string description, string imageUrl, string thumbUrl, ICollection<string> choices)
+        {
+            Question question = new Question();
+            //question.QuestionId = id;
+            question.Description = description;
+            question.ImageUrl = imageUrl;
+            question.ThumbUrl = thumbUrl;
+            question.Choices = choices.Select(choice => new Choice()
+            {
+                Description = choice
+            }).ToArray();
+            question.PublishedAt = DateTime.Now;
+
+            this._questionRepository.Update(id, question);
+
+            this._unitOfWork.Save();
+
+            return question;
+
+        }
+
         public Question GetQuestion(int id)
         {
             return this._questionRepository.GetById(id);

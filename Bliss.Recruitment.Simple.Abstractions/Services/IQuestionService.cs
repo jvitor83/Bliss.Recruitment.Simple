@@ -10,5 +10,6 @@ namespace Bliss.Recruitment.Simple.Abstractions.Services
         Question RegisterQuestion(string description, string imageUrl, string thumbUrl, ICollection<string> choices);
         Question GetQuestion(int id);
         IEnumerable<Question> GetQuestions(int offset, int limit, string filter);
+        Question ChangeQuestion(int id, string description, string imageUrl, string thumbUrl, ICollection<string> choices);
     }
 }
