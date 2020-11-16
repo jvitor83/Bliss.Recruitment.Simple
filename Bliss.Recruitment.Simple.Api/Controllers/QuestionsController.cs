@@ -40,7 +40,23 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 createQuestionRequestModel.Choices
                 );
 
-            return CreatedAtAction(/*nameof(GetById)*/ null, new { id = questionCreated.QuestionId }, questionCreated);
+            return CreatedAtAction(nameof(GetById), new { question_id = questionCreated.QuestionId }, questionCreated);
+        }
+
+        [HttpGet("{question_id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(Question), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int question_id)
+        {
+            Question question = this._questionService.GetQuestion(question_id);
+
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(question);
         }
     }
 }
