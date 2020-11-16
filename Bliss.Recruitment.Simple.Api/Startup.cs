@@ -32,6 +32,9 @@ namespace Bliss.Recruitment.Simple.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bliss.Recruitment.Simple.Api", Version = "v1" });
             });
+
+            Core.Startup.ConfigureServices(services, Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +57,7 @@ namespace Bliss.Recruitment.Simple.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bliss.Recruitment.Simple.Data\Bliss.Recruitment.Simple.Data.csproj" />
+    <ProjectReference Include="..\Bliss.Recruitment.Simple.Models\Bliss.Recruitment.Simple.Models.csproj" />
+  </ItemGroup>
+
+</Project>
