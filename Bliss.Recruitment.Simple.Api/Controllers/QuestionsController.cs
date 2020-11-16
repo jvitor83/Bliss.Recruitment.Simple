@@ -28,13 +28,13 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [ProducesResponseType(typeof(ResponseModel), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] RegisterQuestionRequestModel createQuestionRequestModel)
         {
-            if(!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return BadRequest("All fields are mandatory.");
             }
 
             Question questionCreated = this._questionService.RegisterQuestion(
-                createQuestionRequestModel.Description, 
+                createQuestionRequestModel.Description,
                 createQuestionRequestModel.ImageUrl,
                 createQuestionRequestModel.ThumbUrl,
                 createQuestionRequestModel.Choices
@@ -57,6 +57,23 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
             }
 
             return Ok(question);
+        }
+
+
+        [HttpGet]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(IEnumerable<Question>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromQuery] GetQuestionsWithParamsRequestModel requestModel)
+        {
+            IEnumerable<Question> questions = this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
+
+            if (questions == null || questions.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(questions);
         }
     }
 }

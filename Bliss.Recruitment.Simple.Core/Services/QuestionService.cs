@@ -25,6 +25,11 @@ namespace Bliss.Recruitment.Simple.Core.Services
             return this._questionRepository.GetById(id);
         }
 
+        public IEnumerable<Question> GetQuestions(int offset, int limit, string filter)
+        {
+            return this._questionRepository.GetByParams(offset, limit, filter);
+        }
+
         public Question RegisterQuestion(string description, string imageUrl, string thumbUrl, ICollection<string> choices)
         {
             Question question = new Question();
