@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bliss.Recruitment.Simple.Abstractions\Bliss.Recruitment.Simple.Abstractions.csproj" />
     <ProjectReference Include="..\Bliss.Recruitment.Simple.Models\Bliss.Recruitment.Simple.Models.csproj" />
   </ItemGroup>
 

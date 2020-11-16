@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Bliss.Recruitment.Simple.Abstractions.Services;
+using Bliss.Recruitment.Simple.Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,9 @@ namespace Bliss.Recruitment.Simple.Core
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IQuestionService, QuestionService>();
+
+
             Data.Startup.ConfigureServices(services, configuration);
         }
     }
