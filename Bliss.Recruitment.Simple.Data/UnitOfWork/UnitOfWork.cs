@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bliss.Recruitment.Simple.Data.UnitOfWork
 {
@@ -14,9 +15,9 @@ namespace Bliss.Recruitment.Simple.Data.UnitOfWork
             _recruitmentContext = recruitmentContext;
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _recruitmentContext.SaveChanges();
+            await _recruitmentContext.SaveChangesAsync();
         }
     }
 

@@ -33,7 +33,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Question questionCreated = this._questionService.RegisterQuestion(
+            Question questionCreated = await this._questionService.RegisterQuestion(
                 createQuestionRequestModel.Description,
                 createQuestionRequestModel.ImageUrl,
                 createQuestionRequestModel.ThumbUrl,
@@ -49,7 +49,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int question_id)
         {
-            Question question = this._questionService.GetQuestion(question_id);
+            Question question = await this._questionService.GetQuestion(question_id);
 
             if (question == null)
             {
@@ -66,7 +66,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get([FromQuery] GetQuestionsWithParamsRequestModel requestModel)
         {
-            IEnumerable<Question> questions = this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
+            IEnumerable<Question> questions = await this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
 
             if (questions == null || questions.Count() == 0)
             {
@@ -88,7 +88,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Question question = this._questionService.ChangeQuestion(
+            Question question = await this._questionService.ChangeQuestion(
                 question_id, 
                 requestModel.Description,
                 requestModel.ImageUrl,

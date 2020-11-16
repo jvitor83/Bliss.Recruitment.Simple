@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bliss.Recruitment.Simple.Data
 {
@@ -17,16 +18,16 @@ namespace Bliss.Recruitment.Simple.Data
             this._context = context;
         }
 
-        public Question GetById(int id)
+        public async Task<Question> GetById(int id)
         {
             IQueryable<Question> questionsQueryable = this._context.Questions;
             IQueryable<Question> questionsWithChoicesQueryable = questionsQueryable.Include(r => r.Choices);
             IQueryable<Question> questionsFilteredQueryable = questionsWithChoicesQueryable.Where(question => question.QuestionId == id);
-            Question question = questionsFilteredQueryable.SingleOrDefault();
+            Question question = await questionsFilteredQueryable.SingleOrDefaultAsync();
             return question;
         }
 
-        public IEnumerable<Question> GetByParams(int offset, int limit, string filter)
+        public async Task<IEnumerable<Question>> GetByParams(int offset, int limit, string filter)
         {
             IQueryable<Question> questionsQueryable = this._context.Questions;
             IQueryable<Question> questionsWithChoicesQueryable = questionsQueryable.Include(r => r.Choices);
@@ -42,18 +43,18 @@ namespace Bliss.Recruitment.Simple.Data
                     );
             }
             IQueryable<Question> questionsFilter = questionsWithChoicesQueryable.Skip(offset).Take(limit);
-            IEnumerable<Question> result = questionsFilter.ToList();
+            IEnumerable<Question> result = await questionsFilter.ToListAsync();
             return result;
         }
 
-        public void Insert(Question question)
+        public async Task Insert(Question question)
         {
-            this._context.Questions.AddAsync(question);
+            await this._context.Questions.AddAsync(question);
         }
 
-        public void Update(int id, Question question)
+        public async Task Update(int id, Question question)
         {
-            var existingQuestion = this.GetById(id);
+            var existingQuestion = await this.GetById(id);
 
             // Remove the old choices
             foreach (var choice in existingQuestion.Choices)
