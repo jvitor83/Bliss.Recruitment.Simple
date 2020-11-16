@@ -13,7 +13,12 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bliss.Recruitment.Simple.Models", "Bliss.Recruitment.Simple.Models\Bliss.Recruitment.Simple.Models.csproj", "{C93204CA-866E-4A47-98B2-CF738465F17A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliss.Recruitment.Simple.Abstractions", "Bliss.Recruitment.Simple.Abstractions\Bliss.Recruitment.Simple.Abstractions.csproj", "{63201F5A-CCD0-437C-B4AF-3CF51167E2FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bliss.Recruitment.Simple.Abstractions", "Bliss.Recruitment.Simple.Abstractions\Bliss.Recruitment.Simple.Abstractions.csproj", "{63201F5A-CCD0-437C-B4AF-3CF51167E2FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4F07AF8-494A-4412-8BD1-B729E9D94A2C}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
