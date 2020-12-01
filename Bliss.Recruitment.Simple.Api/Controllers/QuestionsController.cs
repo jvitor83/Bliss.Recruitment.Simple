@@ -1,4 +1,5 @@
-﻿using Bliss.Recruitment.Simple.Abstractions.Services;
+﻿using Bliss.Recruitment.Simple.Abstractions;
+using Bliss.Recruitment.Simple.Abstractions.Services;
 using Bliss.Recruitment.Simple.Api.Models.Request;
 using Bliss.Recruitment.Simple.Api.Models.Response;
 using Bliss.Recruitment.Simple.Models;
@@ -17,9 +18,11 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
     public class QuestionsController : ControllerBase
     {
         protected readonly IQuestionService _questionService;
-        public QuestionsController(IQuestionService questionService)
+        protected readonly IMapper _mapper;
+        public QuestionsController(IQuestionService questionService, Abstractions.IMapper mapper)
         {
             this._questionService = questionService;
+            this._mapper = mapper;
         }
 
         [HttpPost]
@@ -33,14 +36,13 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Core.Models.Question questionCreated = await this._questionService.RegisterQuestion(
-                createQuestionRequestModel.Description,
-                createQuestionRequestModel.ImageUrl,
-                createQuestionRequestModel.ThumbUrl,
-                createQuestionRequestModel.Choices
-                );
+            Core.Models.Input.Question question = this._mapper.Map<Core.Models.Input.Question>(createQuestionRequestModel);
 
-            return CreatedAtAction(nameof(GetById), new { question_id = questionCreated.QuestionId }, questionCreated);
+            Core.Models.Output.Question questionCreated = await this._questionService.RegisterQuestion(question);
+
+            Models.Response.Question questionToReturn = this._mapper.Map<Models.Response.Question>(questionCreated);
+
+            return CreatedAtAction(nameof(GetById), new { question_id = questionToReturn.QuestionId }, questionToReturn);
         }
 
         [HttpGet("{question_id}")]
@@ -49,14 +51,16 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int question_id)
         {
-            Core.Models.Question question = await this._questionService.GetQuestion(question_id);
+            Core.Models.Output.Question question = await this._questionService.GetQuestion(question_id);
 
             if (question == null)
             {
                 return NotFound();
             }
 
-            return Ok(question);
+            Models.Response.Question questionToReturn = this._mapper.Map<Models.Response.Question>(question);
+
+            return Ok(questionToReturn);
         }
 
 
@@ -72,14 +76,20 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest($"The fields '${nameof(GetQuestionsWithParamsRequestModel.Offset)}' and '${nameof(GetQuestionsWithParamsRequestModel.Limit)}' are mandatory.");
             }
 
-            IEnumerable<Core.Models.Question> questions = await this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
+            IEnumerable<Core.Models.Output.Question> questions = await this._questionService.GetQuestions(
+                offset: requestModel.Offset, 
+                limit: requestModel.Limit, 
+                filter: requestModel.Filter
+                );
 
             if (questions == null || questions.Count() == 0)
             {
                 return NotFound();
             }
 
-            return Ok(questions);
+            IEnumerable<Models.Response.Question> questionToReturn = this._mapper.Map<IEnumerable<Models.Response.Question>>(questions);
+
+            return Ok(questionToReturn);
         }
 
 
@@ -94,15 +104,15 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Core.Models.Question question = await this._questionService.ChangeQuestion(
-                question_id, 
-                requestModel.Description,
-                requestModel.ImageUrl,
-                requestModel.ThumbUrl,
-                requestModel.Choices
-                );
+            requestModel.QuestionId = question_id;
 
-            return CreatedAtAction(nameof(GetById), new { question_id = question.QuestionId }, question);
+            Core.Models.Input.Question questionToChange = this._mapper.Map<Core.Models.Input.Question>(requestModel);
+
+            Core.Models.Output.Question questionChanged = await this._questionService.ChangeQuestion(questionToChange);
+
+            Models.Response.Question questionToReturn = this._mapper.Map<Models.Response.Question>(questionChanged);
+
+            return CreatedAtAction(nameof(GetById), new { question_id = questionToReturn.QuestionId }, questionToReturn);
         }
     }
 }

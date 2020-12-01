@@ -5,24 +5,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Bliss.Recruitment.Simple.Core.Models
+namespace Bliss.Recruitment.Simple.Core.Models.Input
 {
     public class Question
     {
-        public int QuestionId { get; set; }
-        [Required]
+        public int? QuestionId { get; set; }
         public string Description { get; set; }
-        [Required]
         public string ImageUrl { get; set; }
-        public DateTime PublishedAt { get; set; }
-        [Required]
         public string ThumbUrl { get; set; }
-        [Required]
-        public ICollection<Choice> Choices { get; set; }
+        public ICollection<string> Choices { get; set; }
 
         public Question()
         {
-            this.Choices = new HashSet<Choice>();
+            this.Choices = new HashSet<string>();
         }
     }
 }

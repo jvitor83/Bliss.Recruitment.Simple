@@ -21,6 +21,7 @@ namespace Bliss.Recruitment.Simple.Core.UnitTests.Steps
         private readonly ScenarioContext _scenarioContext;
 
         private IQuestionService _questionService;
+        private Core.Models.Input.Question _question;
 
         private const string EXCEPTION_KEY = "Exception_RegisterQuestion";
 
@@ -37,8 +38,10 @@ namespace Bliss.Recruitment.Simple.Core.UnitTests.Steps
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true });
             // Register the Validator for the Question
             fixture.Customize(new QuestionFixtureCustomization());
+
             // Arrange
             _questionService = fixture.Create<QuestionService>();
+            _question = fixture.Create<Core.Models.Input.Question>();
         }
 
         [When(@"is tried to register")]
@@ -47,9 +50,9 @@ namespace Bliss.Recruitment.Simple.Core.UnitTests.Steps
             try
             {
                 // Act
-                await _questionService.RegisterQuestion(string.Empty, string.Empty, string.Empty, new List<string>() { string.Empty });
+                await _questionService.RegisterQuestion(_question);
             }
-            catch (Exception exception)
+            catch (ValidationException exception)
             {
                 this._scenarioContext.Add(EXCEPTION_KEY, exception);
             }
@@ -59,7 +62,7 @@ namespace Bliss.Recruitment.Simple.Core.UnitTests.Steps
         public void ThenShouldGivesAnException()
         {
             // Assert
-            var exception = this._scenarioContext.Get<Exception>(EXCEPTION_KEY);
+            var exception = this._scenarioContext.Get<ValidationException>(EXCEPTION_KEY);
             Assert.NotNull(exception);
         }
     }

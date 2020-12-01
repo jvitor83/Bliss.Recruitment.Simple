@@ -12,6 +12,8 @@ namespace Bliss.Recruitment.Simple.Api.Models
     {
         public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services)
         {
+            services.AddScoped<Abstractions.IMapper, Mapper>();
+
             services.AddAutoMapper(typeof(Startup).Assembly);
 
             return services;

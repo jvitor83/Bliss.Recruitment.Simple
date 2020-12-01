@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Bliss.Recruitment.Simple.Core.BussinessRules
 {
-    public class QuestionValidator : AbstractValidator<Question>
+    public class QuestionValidator : AbstractValidator<Core.Models.Input.Question>
     {
         public QuestionValidator()
         {

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bliss.Recruitment.Simple.Abstractions\Bliss.Recruitment.Simple.Abstractions.csproj" />
     <ProjectReference Include="..\Bliss.Recruitment.Simple.Core\Bliss.Recruitment.Simple.Core.csproj" />
   </ItemGroup>
 

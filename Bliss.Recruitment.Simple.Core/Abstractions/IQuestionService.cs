@@ -9,9 +9,9 @@ namespace Bliss.Recruitment.Simple.Abstractions.Services
 {
     public interface IQuestionService
     {
-        Task<Question> RegisterQuestion(string description, string imageUrl, string thumbUrl, ICollection<string> choices);
-        Task<Question> GetQuestion(int id);
-        Task<IEnumerable<Question>> GetQuestions(int offset, int limit, string filter);
-        Task<Question> ChangeQuestion(int id, string description, string imageUrl, string thumbUrl, ICollection<string> choices);
+        Task<Core.Models.Output.Question> RegisterQuestion(Core.Models.Input.Question questionToRegister);
+        Task<Core.Models.Output.Question> GetQuestion(int id);
+        Task<IEnumerable<Core.Models.Output.Question>> GetQuestions(int offset, int limit, string filter = null);
+        Task<Core.Models.Output.Question> ChangeQuestion(Core.Models.Input.Question questionToChange);
     }
 }

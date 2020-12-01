@@ -13,10 +13,17 @@ namespace Bliss.Recruitment.Simple.Core.UnitTests.Steps
     {
         public void Customize(IFixture fixture)
         {
-            fixture.Register<IValidator<Core.Models.Question>>(() =>
+            fixture.Register<IValidator<Core.Models.Input.Question>>(() =>
             {
                 var validator = new QuestionValidator();
-                return validator as IValidator<Core.Models.Question>;
+                return validator as IValidator<Core.Models.Input.Question>;
+            });
+
+            fixture.Register<Core.Models.Input.Question>(() =>
+            {
+                var question = new Core.Models.Input.Question();
+                question.Choices = new List<string>() { string.Empty };
+                return question;
             });
         }
     }

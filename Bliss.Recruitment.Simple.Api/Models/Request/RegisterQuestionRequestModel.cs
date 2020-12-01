@@ -9,6 +9,8 @@ namespace Bliss.Recruitment.Simple.Api.Models.Request
 {
     public class RegisterQuestionRequestModel
     {
+        [JsonIgnore]
+        public int? QuestionId { get; set; }
         [Required]
         [JsonPropertyName("question")]
         public string Description { get; set; }

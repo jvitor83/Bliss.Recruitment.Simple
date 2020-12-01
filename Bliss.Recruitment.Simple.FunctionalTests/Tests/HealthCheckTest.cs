@@ -15,6 +15,7 @@ namespace Bliss.Recruitment.Simple.FunctionalTests
     {
         public HealthCheck(WebAppFixture webAppFixture) : base(webAppFixture)
         {
+            // Arrange
         }
 
         [Fact]
@@ -27,6 +28,5 @@ namespace Bliss.Recruitment.Simple.FunctionalTests
             // Assert
             Assert.Equal("OK", responseModel.Status);
         }
-
     }
 }
