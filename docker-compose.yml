@@ -6,6 +6,16 @@ services:
     build:
       context: .
       dockerfile: Bliss.Recruitment.Simple.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ConnectionStrings__DefaultConnection: "Server=database.bliss.recruitment;Database=Recruitment;User Id=sa;Password=Pa55w0rd;"
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  database.bliss.recruitment:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+#  database.bliss.recruitment:
+#    image: mcr.microsoft.com/mssql/server:2017-latest

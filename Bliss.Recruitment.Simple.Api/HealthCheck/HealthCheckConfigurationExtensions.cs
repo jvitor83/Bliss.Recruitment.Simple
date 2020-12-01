@@ -52,16 +52,12 @@ namespace Bliss.Recruitment.Simple.Api.HealthCheck
             {
                 case HealthStatus.Unhealthy:
                     return "Service Unavailable. Please try again later.";
-                    break;
                 case HealthStatus.Degraded:
                     return "Service unstable, proceed with caution.";
-                    break;
                 case HealthStatus.Healthy:
                     return "OK";
-                    break;
                 default:
                     return "Unknown";
-                    break;
             }
         }
 

@@ -33,7 +33,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Question questionCreated = await this._questionService.RegisterQuestion(
+            Core.Models.Question questionCreated = await this._questionService.RegisterQuestion(
                 createQuestionRequestModel.Description,
                 createQuestionRequestModel.ImageUrl,
                 createQuestionRequestModel.ThumbUrl,
@@ -49,7 +49,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int question_id)
         {
-            Question question = await this._questionService.GetQuestion(question_id);
+            Core.Models.Question question = await this._questionService.GetQuestion(question_id);
 
             if (question == null)
             {
@@ -64,9 +64,15 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(IEnumerable<Question>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromQuery] GetQuestionsWithParamsRequestModel requestModel)
         {
-            IEnumerable<Question> questions = await this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest($"The fields '${nameof(GetQuestionsWithParamsRequestModel.Offset)}' and '${nameof(GetQuestionsWithParamsRequestModel.Limit)}' are mandatory.");
+            }
+
+            IEnumerable<Core.Models.Question> questions = await this._questionService.GetQuestions(offset: requestModel.Offset, limit: requestModel.Limit, filter: requestModel.Filter);
 
             if (questions == null || questions.Count() == 0)
             {
@@ -88,7 +94,7 @@ namespace Bliss.Recruitment.Simple.Api.Controllers
                 return BadRequest("All fields are mandatory.");
             }
 
-            Question question = await this._questionService.ChangeQuestion(
+            Core.Models.Question question = await this._questionService.ChangeQuestion(
                 question_id, 
                 requestModel.Description,
                 requestModel.ImageUrl,

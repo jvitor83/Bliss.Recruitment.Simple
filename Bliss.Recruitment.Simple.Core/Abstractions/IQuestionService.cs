@@ -1,4 +1,5 @@
-﻿using Bliss.Recruitment.Simple.Models;
+﻿using Bliss.Recruitment.Simple.Core.Models;
+using Bliss.Recruitment.Simple.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

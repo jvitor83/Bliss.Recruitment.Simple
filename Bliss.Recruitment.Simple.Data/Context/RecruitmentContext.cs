@@ -1,5 +1,4 @@
-﻿using Bliss.Recruitment.Simple.Models;
-using Bliss.Recruitment.Simple.Models.Entities;
+﻿using Bliss.Recruitment.Simple.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,8 @@ namespace Bliss.Recruitment.Simple.Data.Context
         public RecruitmentContext(DbContextOptions<RecruitmentContext> options)
               : base(options)
         {
+            this.ChangeTracker.AutoDetectChangesEnabled = false;
+            this.ChangeTracker.LazyLoadingEnabled = true;
         }
     }
 }

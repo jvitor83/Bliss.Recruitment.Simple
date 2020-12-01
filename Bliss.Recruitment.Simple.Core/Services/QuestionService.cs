@@ -1,8 +1,9 @@
-﻿using Bliss.Recruitment.Simple.Abstractions.Services;
+﻿using AutoMapper;
+using Bliss.Recruitment.Simple.Abstractions.Services;
 using Bliss.Recruitment.Simple.Data;
-using Bliss.Recruitment.Simple.Data.UnitOfWork;
-using Bliss.Recruitment.Simple.Models;
 using Bliss.Recruitment.Simple.Models.Entities;
+using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,62 +14,77 @@ namespace Bliss.Recruitment.Simple.Core.Services
 {
     public class QuestionService : IQuestionService
     {
-        protected readonly IUnitOfWork _unitOfWork;
         protected readonly IQuestionRepository _questionRepository;
-        public QuestionService(IQuestionRepository questionRespository, IUnitOfWork unitOfWork)
+        protected readonly IMapper _mapper;
+        protected readonly IValidator<Core.Models.Question> _validator;
+
+        public QuestionService(IQuestionRepository questionRespository, IMapper mapper, IValidator<Core.Models.Question> validator)
         {
             this._questionRepository = questionRespository;
-            this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
+            this._validator = validator;
         }
 
-        public async Task<Question> ChangeQuestion(int id, string description, string imageUrl, string thumbUrl, ICollection<string> choices)
+        public async Task<Core.Models.Question> ChangeQuestion(int id, string description, string imageUrl, string thumbUrl, ICollection<string> choices)
         {
-            Question question = new Question();
-            //question.QuestionId = id;
+            Core.Models.Question question = new Core.Models.Question();
+            question.QuestionId = id;
             question.Description = description;
             question.ImageUrl = imageUrl;
             question.ThumbUrl = thumbUrl;
-            question.Choices = choices.Select(choice => new Choice()
+            question.Choices = choices.Select(choice => new Core.Models.Choice()
             {
                 Description = choice
             }).ToArray();
             question.PublishedAt = DateTime.Now;
 
-            this._questionRepository.Update(id, question);
+            await this._validator.ValidateAndThrowAsync(question);
 
-            this._unitOfWork.Save();
+            Recruitment.Simple.Models.Entities.Question questionToUpdate = this._mapper.Map<Recruitment.Simple.Models.Entities.Question>(question);
 
-            return question;
+            await this._questionRepository.Update(questionToUpdate);
+
+            Core.Models.Question questionToReturn = this._mapper.Map<Core.Models.Question>(question);
+
+            return questionToReturn;
 
         }
 
-        public async Task<Question> GetQuestion(int id)
+        public async Task<Core.Models.Question> GetQuestion(int id)
         {
-            return await this._questionRepository.GetById(id);
+            var model = await this._questionRepository.GetById(id);
+            var returnModel = this._mapper.Map<Core.Models.Question>(model);
+            return returnModel;
         }
 
-        public async Task<IEnumerable<Question>> GetQuestions(int offset, int limit, string filter)
+        public async Task<IEnumerable<Core.Models.Question>> GetQuestions(int offset, int limit, string filter)
         {
-            return await this._questionRepository.GetByParams(offset, limit, filter);
+            var models = await this._questionRepository.GetByParams(offset, limit, filter);
+            var returnModels = this._mapper.Map<IEnumerable<Core.Models.Question>>(models);
+            return returnModels;
         }
 
-        public async Task<Question> RegisterQuestion(string description, string imageUrl, string thumbUrl, ICollection<string> choices)
+        public async Task<Core.Models.Question> RegisterQuestion(string description, string imageUrl, string thumbUrl, ICollection<string> choices)
         {
-            Question question = new Question();
+            Core.Models.Question question = new Core.Models.Question();
             question.Description = description;
             question.ImageUrl = imageUrl;
             question.ThumbUrl = thumbUrl;
-            question.Choices = choices.Select(choice => new Choice()
+            question.Choices = choices.Select(choice => new Core.Models.Choice()
             {
                 Description = choice,
             }).ToArray();
             question.PublishedAt = DateTime.Now;
 
-            await this._questionRepository.Insert(question);
+            await this._validator.ValidateAndThrowAsync(question);
 
-            await this._unitOfWork.Save();
+            Recruitment.Simple.Models.Entities.Question questionToInsert = this._mapper.Map<Recruitment.Simple.Models.Entities.Question>(question);
 
-            return question;
+            await this._questionRepository.Insert(questionToInsert);
+
+            Core.Models.Question questionToReturn = this._mapper.Map<Core.Models.Question>(question);
+
+            return questionToReturn;
         }
     }
 }

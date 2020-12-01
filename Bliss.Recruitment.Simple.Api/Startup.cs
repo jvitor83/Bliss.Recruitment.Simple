@@ -1,5 +1,7 @@
 using Bliss.Recruitment.Simple.Api.Documentation;
 using Bliss.Recruitment.Simple.Api.HealthCheck;
+using Bliss.Recruitment.Simple.Api.Models;
+using Bliss.Recruitment.Simple.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,11 +36,13 @@ namespace Bliss.Recruitment.Simple.Api
 
             services.AddSwaggerConfiguration();
 
+            services.AddAutoMapperConfiguration();
+
             string databaseConnectionString = this.Configuration.GetConnectionString(DatabaseConnectionStringName);
 
             services.AddHealthCheckConfiguration(databaseConnectionString);
 
-            Core.Startup.ConfigureServices(services, Configuration);
+            services.ConfigureServicesForCore(Configuration);
 
         }
 
